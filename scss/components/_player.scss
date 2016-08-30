@@ -1,0 +1,16 @@
+
+.video-player {
+  color: red;
+}
+
+.progressBarNoFill {
+  width: 100%;
+  height: 10px;
+  background: #393939;
+}
+
+.progressBarFilling {
+  width: 0;
+  height: 10px;
+  background: $yellow-base;
+}

@@ -1,19 +1,29 @@
 body {
+  background: $bkg-light;
   font-family: 'Droid Serif', sans-serif;
   font-size: 16px;
 }
 
 p {
+  font-size: 0.85em;
   line-height: 1.5em;
-  margin-top: 1.6em;
-  margin-bottom: -0.1em;
+  margin-top: 2.4em;
+  margin-bottom: -0.9em;
+  color: $txt-light;
 }
 
-/* ==========
-  Vido player styling
-========== */
+p:hover {
+  color: $yellow-base;
+}
 
-.video-player {
-  max-width: 1280px;
-  margin: 0 auto;
+@include tablets {
+  p {
+    font-size: 1rem;
+    margin-top: 1.6em;
+    margin-bottom: -0.1em;
+  }
+}
+
+@media #{brk-display} {
+
 }

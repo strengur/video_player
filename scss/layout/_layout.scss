@@ -1,0 +1,25 @@
+/* ==========
+  Vido player styling
+========== */
+
+.video-player {
+  width: 100%;
+}
+
+.caption {
+  max-width: 39em;
+  margin: 0 auto 30px;
+
+}
+
+.caption-content {
+  margin: 0 20px;
+}
+
+@media #{brk-tablet} {
+
+}
+
+@media #{brk-display} {
+
+}

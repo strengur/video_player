@@ -13,15 +13,24 @@
   <body>
     <div class="wrapper">
 
-      <video class="video-player" controls>
+      <video id="the-player" class="video-player" controls>
         <source src="video/video.mp4" type="video/mp4">
         <source src="video/video.ogg" type="video/ogg">
           <track label="English text" kind="subtitles" srclang="in" src="video/captions.vtt" default>
       </video>
 
+      <div class="video-controls">
+        <button id="play-pause">Play/Pause</button>
+        <div id="progressBar" class="progressBarNoFill">
+          <div class="progressBarFilling"></div>
+        </div>
+      </div>
+
+
+<div id="loadStatus"></div>
       <div class="caption">
         <div class="caption-content">
-          <p>Now that we've looked at the architecture of the internet, let's see how you might connect your personal devices to the internet inside your house. Well there are many ways to connect to the internet, and most often people connect wirelessly.</p>
+          <p>Now that we've looked at the architecture of the internet, let's see how you X might connect your personal devices to the internet inside your house. Well there are many ways to connect to the internet, and most often people connect wirelessly.</p>
           <p>Let's look at an example of how you can connect to the internet. If you live in a city or a town, you probably have a coaxial cable for cable Internet, or a phone line if you have DSL, running to the outside of your house, that connects you to the Internet Service Provider, or ISP.</p>
           <p>If you live far out in the country, you'll more likely have a dish outside your house, connecting you wirelessly to your closest ISP, or you might also use the telephone system.</p>
           <p>Whether a wire comes straight from the ISP hookup outside your house, or it travels over radio waves from your roof, the first stop a wire will make once inside your house, is at your modem.</p>
@@ -30,5 +39,13 @@
       </div>
 
     </div>
+
+    <footer>
+      <a href="videofile.mp4">download video</a>
+    </footer>
+
+    <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script src="js/app.js"></script>
   </body>
 </html>

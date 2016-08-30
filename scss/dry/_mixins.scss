@@ -1,0 +1,15 @@
+// Medis queries mixins
+$brk-tablets  : 768px;
+$brk-displays : 1024px;
+
+@mixin tablets {
+  @media screen and (min-width: $brk-tablets) {
+    @content;
+  }
+}
+
+@mixin displays {
+  @media screen and (min-width: $brk-displays){
+    @content;
+  }
+}
