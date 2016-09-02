@@ -18,12 +18,6 @@ p:hover {
     font-size: 1rem;
     margin-top: 1.6em;
     margin-bottom: -0.1em; } }
-/* ==========
-  Vido player styling
-========== */
-.video-player {
-  width: 100%; }
-
 .caption {
   max-width: 39em;
   margin: 0 auto 30px; }
@@ -31,17 +25,35 @@ p:hover {
 .caption-content {
   margin: 0 20px; }
 
+/* ==========
+  Vido player styling
+========== */
+.video-content-and-control {
+  position: relative;
+  top: 0;
+  left: 0; }
+
 .video-player {
-  color: red; }
+  width: 100%;
+  z-index: -1; }
+
+.video-controls {
+  position: relative;
+  bottom: 0;
+  margin-top: -33px;
+  z-index: 100; }
 
 .progressBarNoFill {
   width: 100%;
-  height: 10px;
   background: #393939; }
 
 .progressBarFilling {
   width: 0;
-  height: 10px;
-  background: #FF9900; }
+  background: #FF9900;
+  transition: 1s; }
+
+.progressBarFilling,
+.progressBarNoFill {
+  height: 5px; }
 
 /*# sourceMappingURL=application.css.map */

@@ -12,20 +12,22 @@
   </head>
   <body>
     <div class="wrapper">
-
-      <video id="the-player" class="video-player" controls>
+      <div class="video-content-and-control">
+      <video id="the-player" class="video-player" controls false>
         <source src="video/video.mp4" type="video/mp4">
         <source src="video/video.ogg" type="video/ogg">
-          <track label="English text" kind="subtitles" srclang="in" src="video/captions.vtt" default>
+        <track label="English text" kind="subtitles" srclang="in" src="video/captions.vtt" default>
       </video>
 
-      <div class="video-controls">
-        <button id="play-pause">Play/Pause</button>
-        <div id="progressBar" class="progressBarNoFill">
-          <div class="progressBarFilling"></div>
-        </div>
-      </div>
 
+    </div>
+
+    <div class="video-controls">
+      <div id="progressBar" class="progressBarNoFill">
+        <div class="progressBarFilling"></div>
+      </div>
+      <button id="play-pause">Play/Pause</button>
+    </div>
 
 <div id="loadStatus"></div>
       <div class="caption">
@@ -44,7 +46,8 @@
       <a href="videofile.mp4">download video</a>
     </footer>
 
-    <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+    <!-- <script src="http://code.jquery.com/jquery-1.10.2.js"></script> -->
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
     <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     <script src="js/app.js"></script>
   </body>

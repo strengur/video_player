@@ -68,7 +68,7 @@ function playedProgressBarFilling() {
   var endBuf = $('video')[0].currentTime;
   var soFar = ((endBuf / $mediaPlayer.duration) * 100 + 1);
   var $progressBar = document.getElementsByClassName('progressBarFilling');
-  $('.progressBarFilling').css('width', soFar + '%');
+  $($progressBar).css('width', soFar + '%');
   document.getElementById("loadStatus").innerHTML =  soFar + '%';
 }
 
