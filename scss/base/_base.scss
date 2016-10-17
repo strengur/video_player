@@ -24,6 +24,6 @@ p:hover {
   }
 }
 
-@media #{brk-display} {
+@include displays {
 
 }

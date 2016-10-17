@@ -15,6 +15,7 @@
 .video-controls {
   position: relative;
   bottom: 0;
+  top: -24px;
   margin-top: -33px;
   z-index: 100;
 }
@@ -22,6 +23,7 @@
 .progressBarNoFill {
   width: 100%;
   background: #393939;
+  margin-bottom: 10px;
 }
 
 .progressBarFilling {
@@ -33,4 +35,50 @@
 .progressBarFilling,
 .progressBarNoFill {
   height: 5px;
+}
+
+.control-panel {
+  position: relative;
+  display: inline-flex;
+  height: 30px;
+  width: 98%;
+  margin: 0 10px;
+  // border: 1px solid red;
+}
+
+.flex-item {
+  align-self: center;
+  margin-right: 10px;
+}
+
+.flex-item:last-child {
+  margin-right: 0;
+}
+
+.flex-item-2 {
+  margin-right: auto;
+}
+
+.play-pause {
+  position: relative;
+
+}
+
+.time p {
+  margin: 0;
+  color: #FFF;
+}
+
+#play-pause,
+#mute,
+#volume-up {
+  margin-right: 20px;
+}
+
+#volume-down {
+  margin-right: 5px;
+}
+
+#full-screen {
+  margin-right: 10px;
 }

@@ -13,7 +13,7 @@
   <body>
     <div class="wrapper">
       <div class="video-content-and-control">
-      <video id="the-player" class="video-player" controls false>
+      <video id="the-player" class="video-player">
         <source src="video/video.mp4" type="video/mp4">
         <source src="video/video.ogg" type="video/ogg">
         <track label="English text" kind="subtitles" srclang="in" src="video/captions.vtt" default>
@@ -26,10 +26,20 @@
       <div id="progressBar" class="progressBarNoFill">
         <div class="progressBarFilling"></div>
       </div>
-      <button id="play-pause">Play/Pause</button>
-      <button id="mute">Mute</button>
-      <button id="volume-down">Volume -</button>
-      <button id="volume-up">Volume +</button>
+      <div class="control-panel">
+        <div class="play-pause flex-item">
+          <img id="play-pause" src="icons/play-icon.png">
+        </div>
+        <div class="time flex-item flex-item-2">
+          <p></p>
+        </div>
+        <div class="volume-controls flex-item">
+          <img id="mute" src="icons/volume-on-icon.png">
+          <img id="volume-down" src="icons/volume-down-icon.png">
+          <img id="volume-up" src="icons/volume-up-icon.png">
+          <img id="full-screen" src="icons/fullscreen-icon.png">
+        </div>
+      </div>
     </div>
 
     <div id="loadStatus"></div>
