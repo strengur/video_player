@@ -25,13 +25,14 @@
     <div class="video-controls">
       <div id="progressBar" class="progressBarNoFill">
         <div class="progressBarFilling"></div>
+        <div id="timeOnProgressBar"></div>
       </div>
       <div class="control-panel">
         <div class="play-pause flex-item">
           <img id="play-pause" src="icons/play-icon.png">
         </div>
         <div class="time flex-item flex-item-2">
-          <p></p>
+          <p><span id="currentTime"></span> / <span id="duration"></span></p>
         </div>
         <div class="volume-controls flex-item">
           <img id="mute" src="icons/volume-on-icon.png">

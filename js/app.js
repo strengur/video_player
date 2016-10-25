@@ -1,21 +1,74 @@
 // Variables
   var $myVideo = document.getElementsByTagName("video")[0];
+  //var $cccc = document.getElementsByClassName('video-content-and-control');
   var $playPauseButton = document.getElementById('play-pause');
-  var $sizeScreenButton = document.getElementById('screen-size');
+  var $sizeScreenButton = document.getElementById('full-screen');
   var $muteButton = document.getElementById('mute');
   var $volumeDownButton = document.getElementById('volume-down');
   var $volumeUpButton = document.getElementById('volume-up');
   var $muteButton = document.getElementById('mute');
-
-
-
+  var $timeLine = document.getElementById('progressBar');
+  var $timeBubble = document.getElementById('timeOnProgressBar');
+  var $currentTime = $myVideo.currentTime;
+  var $duration = $myVideo.duration;
   var $volumeChange;
 
-// Functions
+// BEGIN: Transform seconds from video to min:sec format
+  function transformSeconds($e) {
+    var $minutes = Math.floor($e / 60);
+    var $seconds = $e - $minutes * 60;
+
+    return [$minutes, $seconds];
+  }
+
+  var $durationTotal = transformSeconds($duration);
+
+// END: Transform seconds from video to min:sec format
+
+// BEGIN: Check to see if sec and/or min is two digit or not and if not, add leading cero to the time.
+  function ceroLeft(string,pad,length) {
+    if (string.toString().length !== 2) {
+      return (new Array(length+1).join(pad)+string);
+    } else {
+    return (new Array(length).join(pad)+string);
+    }
+  }
+  // END: Check to see if sec and/or min is two digit or not and if not, add leading cero to the time.
+
+
+  var $totalDuration = ceroLeft($durationTotal[0],'0',1) + ':' + ceroLeft(Math.round($durationTotal[1]),'0', 1);
+
+  document.getElementById('currentTime').innerHTML = "00:00";
+  document.getElementById("duration").innerHTML = $totalDuration;
+
+// BEGIN: Current playing time.
+  $myVideo.ontimeupdate = function() {
+    videoCurrentTime();
+    playedProgressBarFilling();
+  };
+
+  function videoCurrentTime() {
+    var $currentPlay = transformSeconds($myVideo.currentTime);
+    var $currentPlayed = ceroLeft($currentPlay[0],'0',1) + ':' + ceroLeft(Math.round($currentPlay[1]),'0', 1);
+
+    document.getElementById('currentTime').innerHTML = $currentPlayed;
+
+
+
+  }
+// END: Current playing time.
+
+function playedProgressBarFilling() {
+  var $endBuf = $myVideo.currentTime;
+  var $soFar = (($endBuf / $myVideo.duration) * 0.25 * 400);
+  var $progressBar = document.getElementsByClassName('progressBarFilling');
+  $($progressBar).css('width', $soFar + '%');
+
+  //$($timeBubble).css('left', ($soFar-2) + '%');
+}
 
 function videoVolume($volumeChange) {
   console.log($volumeChange);
-
 }
 
   var screenSize = function() {
@@ -28,17 +81,40 @@ function videoVolume($volumeChange) {
 
 // Event listeners
 
-$(document).ready(function(){
-  $('video').bind('timeupdate',function(){
-    var $current_time = $('video')[0].currentTime;
-    var $length_of_video = $('video')[0].duration;
-    var $forwardSlash = " / ";
-    console.log(parseFloat($current_time).toFixed(2));
-    $('.time p').html(Math.ceil($current_time));
+$timeLine.addEventListener('mousemove', function() {
+  var $locationOnBar = event.pageX;
+  var $locationToPerc = $locationOnBar / Math.round($timeLine.offsetWidth) * 100 -2;
+  var $durationOnBar = $locationOnBar / Math.round($timeLine.offsetWidth) * $duration -1.5;
+  var $durationTotal = transformSeconds($durationOnBar);
+  var $bubbleTime = ceroLeft($durationTotal[0],'0',1) + ':' + ceroLeft(Math.round($durationTotal[1]),'0', 1);
+
+  document.getElementById('timeOnProgressBar').innerHTML = $bubbleTime;
+  $($timeBubble).css('display', 'block');
+  $($timeBubble).css('left', ($locationToPerc-2) + '%');
+  $timeLine.addEventListener('click', function() {
+    $myVideo.currentTime = $durationOnBar;
   });
 });
 
-$playPauseButton.addEventListener("click", function() {
+$timeLine.addEventListener('mouseleave', function() {
+  $($timeBubble).css('display', 'none');
+});
+
+$('.video-content-and-control').mouseenter(function() {
+  $('.video-controls').css('top', '-24px');
+}).mouseleave(function() {
+  $('.video-controls').css('top', '29px');
+});
+
+// $myVideo.addEventListener('mouseleave', function() {
+//   $('.video-controls').css('top', '29px');
+// });
+//
+// $myVideo.addEventListener('mouseover', function() {
+//   $('.video-controls').css('top', '-24px');
+// }, false);
+
+$playPauseButton.addEventListener('click', function() {
   if( $myVideo.paused ) {
     $myVideo.play();
     $(this).attr('src', 'icons/pause-icon.png');
@@ -73,3 +149,7 @@ $volumeUpButton.addEventListener('click', function() {
     $('#mute').attr('src', 'icons/volume-on-icon.png');
   }
 } );
+
+$sizeScreenButton.addEventListener('click', function() {
+  $myVideo.webkitEnterFullScreen();
+});

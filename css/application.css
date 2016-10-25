@@ -39,9 +39,12 @@ p:hover {
 
 .video-controls {
   position: relative;
+  background: rgba(0, 0, 0, 0.5);
   bottom: 0;
   top: -24px;
-  margin-top: -33px;
+  width: 95%;
+  margin: -33px auto 0;
+  padding-bottom: 8px;
   z-index: 100; }
 
 .progressBarNoFill {
@@ -52,7 +55,7 @@ p:hover {
 .progressBarFilling {
   width: 0;
   background: #FF9900;
-  transition: 1s; }
+  transition: 0.3s; }
 
 .progressBarFilling,
 .progressBarNoFill {
@@ -92,5 +95,25 @@ p:hover {
 
 #full-screen {
   margin-right: 10px; }
+
+#timeOnProgressBar {
+  display: none;
+  position: absolute;
+  left: -2%;
+  margin-top: -34px;
+  border: 1px solid;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.5);
+  color: #333;
+  text-align: center;
+  padding: 3px; }
+
+#play-pause:hover,
+#mute:hover,
+#volume-up:hover,
+#volume-down:hover,
+#full-screen:hover,
+#timeOnProgressBar:hover {
+  cursor: pointer; }
 
 /*# sourceMappingURL=application.css.map */
