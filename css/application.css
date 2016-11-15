@@ -19,11 +19,16 @@ p:hover {
     margin-top: 1.6em;
     margin-bottom: -0.1em; } }
 .caption {
-  max-width: 39em;
-  margin: 0 auto 30px; }
+  position: relative;
+  background: #f7f7f7;
+  width: 100%;
+  margin: -24px auto 30px;
+  z-index: 100; }
 
 .caption-content {
-  margin: 0 20px; }
+  max-width: 39em;
+  margin: 0 auto;
+  padding: 20px 20px 0; }
 
 /* ==========
   Vido player styling
@@ -45,7 +50,7 @@ p:hover {
   width: 95%;
   margin: -33px auto 0;
   padding-bottom: 8px;
-  z-index: 100; }
+  z-index: 1; }
 
 .progressBarNoFill {
   width: 100%;
