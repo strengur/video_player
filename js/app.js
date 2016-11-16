@@ -12,6 +12,8 @@
   var $currentTime = $myVideo.currentTime;
   var $duration = $myVideo.duration;
   var $volumeChange;
+  var x = 0;
+  var $numberOfTextTracks = $myVideo.textTracks[0].cues.length; // How many caption texts there are
 
 // BEGIN: Transform seconds from video to min:sec format
   function transformSeconds($e) {
@@ -22,7 +24,6 @@
   }
 
   var $durationTotal = transformSeconds($duration);
-
 // END: Transform seconds from video to min:sec format
 
 // BEGIN: Check to see if sec and/or min is two digit or not and if not, add leading cero to the time.
@@ -35,7 +36,6 @@
   }
   // END: Check to see if sec and/or min is two digit or not and if not, add leading cero to the time.
 
-
   var $totalDuration = ceroLeft($durationTotal[0],'0',1) + ':' + ceroLeft(Math.round($durationTotal[1]),'0', 1);
 
   document.getElementById('currentTime').innerHTML = "00:00";
@@ -45,17 +45,21 @@
   $myVideo.ontimeupdate = function() {
     videoCurrentTime();
     playedProgressBarFilling();
+
+
+    // Function to highlight bodytext
+    if (Math.round($captionTextArray[x]) === Math.round($myVideo.currentTime)) {
+      x++;
+      highlightText((x-1));
+    }
+
   };
 
-  function videoCurrentTime() {
-    var $currentPlay = transformSeconds($myVideo.currentTime);
-    var $currentPlayed = ceroLeft($currentPlay[0],'0',1) + ':' + ceroLeft(Math.round($currentPlay[1]),'0', 1);
-
-    document.getElementById('currentTime').innerHTML = $currentPlayed;
-
-
-
-  }
+function videoCurrentTime() {
+  var $currentPlay = transformSeconds($myVideo.currentTime);
+  var $currentPlayed = ceroLeft($currentPlay[0],'0',1) + ':' + ceroLeft(Math.round($currentPlay[1]),'0', 1);
+  document.getElementById('currentTime').innerHTML = $currentPlayed;
+}
 // END: Current playing time.
 
 function playedProgressBarFilling() {
@@ -66,6 +70,59 @@ function playedProgressBarFilling() {
 
   //$($timeBubble).css('left', ($soFar-2) + '%');
 }
+
+// BEGIN: Highlight bodytext as it is spoken.
+  // Add caption text to object
+    var $captionTextObject = new Object();
+    for(var i = 0; i < $numberOfTextTracks; i++ ) {
+      var $startOfTextTrack = $myVideo.textTracks[0].cues[i].startTime;
+      var $textInTextTrack = $myVideo.textTracks[0].cues[i].text;
+      $captionTextObject[$startOfTextTrack] = $textInTextTrack;
+    }
+
+    var $captionTextArray = new Array();
+    for(var i = 0; i < $numberOfTextTracks; i++ ) {
+      var $startOfTextTrack = $myVideo.textTracks[0].cues[i].startTime;
+      //var $textInTextTrack = $myVideo.textTracks[0].cues[i].text;
+      $captionTextArray.push($startOfTextTrack);
+    }
+
+  // Function to make the bodytext highlight.
+  function highlightText(x) {
+
+        var objectKey = $captionTextArray[x];
+        var key = $captionTextObject[objectKey];
+        var $parag = $('#caption-texts');
+        var $paragText = $parag[0].innerText;
+        var $paragFound = $paragText.search(key);
+        //$parag = $parag.text;
+        console.log('Iffy: ', x);
+        console.log($captionTextArray[x]);
+        console.log('Key: ',key);
+        console.log('Parag Search: ', $paragText);
+        if(key == $paragFound) {
+          console.log('Neiiiii');
+          $paragText.replace($paragText, '<i>', $paragFound, '</i>');
+        }else {
+          console.log('Jáááá');
+        }
+        var str = key;
+        //.replace(key, '<span class="red">', key, '</span>');
+        //document.getElementById('caption-texts').innerHTML('key');
+      // Add CC text to Object with time as key
+
+
+      //var str = 'For more information, see Chapter 3.4.5.1';
+//var re = /see (chapter \d+(\.\d)*)/i;
+var found = str.match(key);
+console.log(found);
+
+var str1 = key;
+var newstr = str1.replace(key, key.toUpperCase());
+console.log(newstr);  // Twas the night before Christmas...
+
+  }
+// END: Function to highlight bodytext as it is spoken.
 
 function videoVolume($volumeChange) {
   console.log($volumeChange);
@@ -98,21 +155,13 @@ $timeLine.addEventListener('mousemove', function() {
 
 $timeLine.addEventListener('mouseleave', function() {
   $($timeBubble).css('display', 'none');
-});
+})
 
-$('.video-content-and-control').mouseenter(function() {
-  $('.video-controls').css('top', '-24px');
-}).mouseleave(function() {
-  $('.video-controls').css('top', '29px');
-});
-
-// $myVideo.addEventListener('mouseleave', function() {
-//   $('.video-controls').css('top', '29px');
-// });
-//
-// $myVideo.addEventListener('mouseover', function() {
+// $('.video-content-and-control').mouseenter(function() {
 //   $('.video-controls').css('top', '-24px');
-// }, false);
+// }).mouseleave(function() {
+//    $('.video-controls').css('top', '29px');
+//  });
 
 $playPauseButton.addEventListener('click', function() {
   if( $myVideo.paused ) {
