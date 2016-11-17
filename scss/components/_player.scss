@@ -82,7 +82,8 @@
   margin-right: 5px;
 }
 
-#full-screen {
+#full-screen,
+#caption-text-control {
   margin-right: 10px;
 }
 
@@ -106,6 +107,7 @@
 #volume-up:hover,
 #volume-down:hover,
 #full-screen:hover,
-#timeOnProgressBar:hover {
+#timeOnProgressBar:hover,
+#caption-text-control:hover {
   cursor: pointer;
 }

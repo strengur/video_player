@@ -7,6 +7,7 @@
   var $volumeDownButton = document.getElementById('volume-down');
   var $volumeUpButton = document.getElementById('volume-up');
   var $muteButton = document.getElementById('mute');
+  var $captionTextControl = document.getElementById('caption-text-control');
   var $timeLine = document.getElementById('progressBar');
   var $timeBubble = document.getElementById('timeOnProgressBar');
   var $currentTime = $myVideo.currentTime;
@@ -94,32 +95,13 @@ function playedProgressBarFilling() {
         var key = $captionTextObject[objectKey];
         var $parag = $('#caption-texts');
         var $paragText = $parag[0].innerText;
-        var $paragFound = $paragText.search(key);
+        var $paragFound = $paragText.search('Now that');
         //$parag = $parag.text;
         console.log('Iffy: ', x);
         console.log($captionTextArray[x]);
-        console.log('Key: ',key);
-        console.log('Parag Search: ', $paragText);
-        if(key == $paragFound) {
-          console.log('Neiiiii');
-          $paragText.replace($paragText, '<i>', $paragFound, '</i>');
-        }else {
-          console.log('Jáááá');
-        }
-        var str = key;
-        //.replace(key, '<span class="red">', key, '</span>');
-        //document.getElementById('caption-texts').innerHTML('key');
-      // Add CC text to Object with time as key
-
-
-      //var str = 'For more information, see Chapter 3.4.5.1';
-//var re = /see (chapter \d+(\.\d)*)/i;
-var found = str.match(key);
-console.log(found);
-
-var str1 = key;
-var newstr = str1.replace(key, key.toUpperCase());
-console.log(newstr);  // Twas the night before Christmas...
+        console.log('Key string: ',key);
+        console.log('Parag Text: ', $paragText);
+        console.log('Parag Found:', $paragFound);
 
   }
 // END: Function to highlight bodytext as it is spoken.
@@ -198,6 +180,16 @@ $volumeUpButton.addEventListener('click', function() {
     $('#mute').attr('src', 'icons/volume-on-icon.png');
   }
 } );
+
+$captionTextControl.addEventListener('click', function() {
+  if ($myVideo.textTracks[0].mode == "showing") {
+    $myVideo.textTracks[0].mode = "disabled";
+    $('#caption-text-control').attr('src', 'icons/caption-text-off.png');
+  } else {
+    $myVideo.textTracks[0].mode = "showing";
+    $('#caption-text-control').attr('src', 'icons/caption-text.png');
+  }
+});
 
 $sizeScreenButton.addEventListener('click', function() {
   $myVideo.webkitEnterFullScreen();
