@@ -16,11 +16,18 @@
   position: relative;
   background: rgba(0,0,0,0.5);
   bottom: 0;
-  top: -24px;
+  top: 24px;
   width: 95%;
   margin: -33px auto 0;
   padding-bottom: 8px;
   z-index: 1;
+  transition: 0.3s;
+}
+
+.video-controls-show {
+  // z-index: 2;
+  top: -24px;
+  transition: 0.5s;
 }
 
 .progressBarNoFill {

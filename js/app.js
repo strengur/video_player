@@ -139,11 +139,11 @@ $timeLine.addEventListener('mouseleave', function() {
   $($timeBubble).css('display', 'none');
 })
 
-// $('.video-content-and-control').mouseenter(function() {
-//   $('.video-controls').css('top', '-24px');
-// }).mouseleave(function() {
-//    $('.video-controls').css('top', '29px');
-//  });
+$('.video-content-and-control').mouseenter(function() {
+  $('.video-controls').addClass('video-controls-show');
+}).mouseleave(function() {
+   $('.video-controls').removeClass('video-controls-show');
+ });
 
 $playPauseButton.addEventListener('click', function() {
   if( $myVideo.paused ) {
