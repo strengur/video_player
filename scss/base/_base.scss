@@ -12,10 +12,6 @@ p {
   color: $txt-light;
 }
 
-p:hover {
-  color: $yellow-base;
-}
-
 @include tablets {
   p {
     font-size: 1rem;

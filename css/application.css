@@ -10,9 +10,6 @@ p {
   margin-bottom: -0.9em;
   color: rgba(126, 126, 126, 0.5); }
 
-p:hover {
-  color: #FF9900; }
-
 @media screen and (min-width: 768px) {
   p {
     font-size: 1rem;
@@ -30,8 +27,13 @@ p:hover {
   margin: 0 auto;
   padding: 20px 20px 0; }
 
+span.caption-highlight {
+  color: #FF9900;
+  background: #FFEEDD;
+  transition: 1s; }
+
 /* ==========
-  Vido player styling
+  Video player styling
 ========== */
 .video-content-and-control {
   position: relative;
@@ -48,7 +50,7 @@ p:hover {
   bottom: 0;
   top: 24px;
   width: 95%;
-  margin: -33px auto 0;
+  margin: -35px auto 0;
   padding-bottom: 8px;
   z-index: 1;
   transition: 0.3s; }
@@ -58,18 +60,28 @@ p:hover {
   transition: 0.5s; }
 
 .progressBarNoFill {
+  position: relative;
   width: 100%;
   background: #393939;
-  margin-bottom: 10px; }
+  margin-bottom: 10px;
+  z-index: 0; }
 
-.progressBarFilling {
+.progress-bar-filling {
   width: 0;
   background: #FF9900;
   transition: 0.3s; }
 
-.progressBarFilling,
+.progress-bar-filling,
 .progressBarNoFill {
-  height: 5px; }
+  height: 7px; }
+
+#buffer-bar-filling {
+  position: absolute;
+  display: block;
+  height: 100%;
+  background-color: #FFEEDD;
+  width: 0;
+  z-index: -1; }
 
 .control-panel {
   position: relative;
@@ -98,7 +110,7 @@ p:hover {
 #play-pause,
 #mute,
 #volume-up {
-  margin-right: 20px; }
+  margin-right: 5px; }
 
 #volume-down {
   margin-right: 5px; }
@@ -125,7 +137,15 @@ p:hover {
 #volume-down:hover,
 #full-screen:hover,
 #timeOnProgressBar:hover,
-#caption-text-control:hover {
+#caption-text-control:hover,
+#playback-normal:hover,
+#playback-fast:hover {
   cursor: pointer; }
+
+@media screen and (min-width: 768px) {
+  #play-pause,
+  #mute,
+  #volume-up {
+    margin-right: 5px; } }
 
 /*# sourceMappingURL=application.css.map */

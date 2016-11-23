@@ -12,10 +12,16 @@
   padding: 20px 20px 0;
 }
 
-@media #{brk-tablet} {
+span.caption-highlight {
+  color: #FF9900;
+  background: #FFEEDD;
+  transition: 1s;
+}
+
+@include displays {
 
 }
 
-@media #{brk-display} {
+@include tablets {
 
 }

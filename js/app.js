@@ -12,6 +12,8 @@
   var $timeBubble = document.getElementById('timeOnProgressBar');
   var $currentTime = $myVideo.currentTime;
   var $duration = $myVideo.duration;
+  var $playbackNormal = document.getElementById('playback-normal');
+  var $playbackFast = document.getElementById('playback-fast');
   var $volumeChange;
   var x = 0;
   var $numberOfTextTracks = $myVideo.textTracks[0].cues.length; // How many caption texts there are
@@ -39,38 +41,39 @@
 
   var $totalDuration = ceroLeft($durationTotal[0],'0',1) + ':' + ceroLeft(Math.round($durationTotal[1]),'0', 1);
 
-  document.getElementById('currentTime').innerHTML = "00:00";
+  document.getElementById('current-time').innerHTML = "00:00";
   document.getElementById("duration").innerHTML = $totalDuration;
 
-// BEGIN: Current playing time.
   $myVideo.ontimeupdate = function() {
     videoCurrentTime();
     playedProgressBarFilling();
-
-
     // Function to highlight bodytext
     if (Math.round($captionTextArray[x]) === Math.round($myVideo.currentTime)) {
       x++;
       highlightText((x-1));
     }
-
   };
 
 function videoCurrentTime() {
   var $currentPlay = transformSeconds($myVideo.currentTime);
   var $currentPlayed = ceroLeft($currentPlay[0],'0',1) + ':' + ceroLeft(Math.round($currentPlay[1]),'0', 1);
-  document.getElementById('currentTime').innerHTML = $currentPlayed;
+  document.getElementById('current-time').innerHTML = $currentPlayed;
 }
-// END: Current playing time.
 
 function playedProgressBarFilling() {
   var $endBuf = $myVideo.currentTime;
-  var $soFar = (($endBuf / $myVideo.duration) * 0.25 * 400);
-  var $progressBar = document.getElementsByClassName('progressBarFilling');
+  var $soFar = (($endBuf / $myVideo.duration) * 100);
+  var $progressBar = document.getElementsByClassName('progress-bar-filling');
   $($progressBar).css('width', $soFar + '%');
-
-  //$($timeBubble).css('left', ($soFar-2) + '%');
 }
+
+$myVideo.addEventListener('progress', function() {
+  var bufferedEnd = $myVideo.buffered.end($myVideo.buffered.length - 1);
+  var duration =  $myVideo.duration;
+  if (duration > 0) {
+        document.getElementById('buffer-bar-filling').style.width = ((bufferedEnd / duration)*100) + "%";
+  }
+});
 
 // BEGIN: Highlight bodytext as it is spoken.
   // Add caption text to object
@@ -80,29 +83,26 @@ function playedProgressBarFilling() {
       var $textInTextTrack = $myVideo.textTracks[0].cues[i].text;
       $captionTextObject[$startOfTextTrack] = $textInTextTrack;
     }
-
+  // Add caption time as array to be used to retrieve text from the object above.
     var $captionTextArray = new Array();
     for(var i = 0; i < $numberOfTextTracks; i++ ) {
       var $startOfTextTrack = $myVideo.textTracks[0].cues[i].startTime;
-      //var $textInTextTrack = $myVideo.textTracks[0].cues[i].text;
       $captionTextArray.push($startOfTextTrack);
     }
 
   // Function to make the bodytext highlight.
   function highlightText(x) {
+      var $objectKey = $captionTextArray[x];
+      $key = $captionTextObject[$objectKey];
+      var $parag = $('#caption-texts p');
 
-        var objectKey = $captionTextArray[x];
-        var key = $captionTextObject[objectKey];
-        var $parag = $('#caption-texts');
-        var $paragText = $parag[0].innerText;
-        var $paragFound = $paragText.search('Now that');
-        //$parag = $parag.text;
-        console.log('Iffy: ', x);
-        console.log($captionTextArray[x]);
-        console.log('Key string: ',key);
-        console.log('Parag Text: ', $paragText);
-        console.log('Parag Found:', $paragFound);
+      var $rmlbr = $key.replace(/(\r\n|\n|\r)/gm," ");
+      var $reg = new RegExp(($rmlbr), "igm");
 
+      $parag.each(function() {
+        var text = $(this).text().replace($reg, '<span class="caption-highlight">' + $rmlbr + '</span>');
+        $(this).html(text);
+      });
   }
 // END: Function to highlight bodytext as it is spoken.
 
@@ -171,7 +171,7 @@ $volumeDownButton.addEventListener('click', function() {
   if ($myVideo.volume < 0.1) {
     $('#mute').attr('src', 'icons/volume-off-icon.png');
   }
-} );
+});
 
 $volumeUpButton.addEventListener('click', function() {
   var currentVolume = $myVideo.volume;
@@ -179,10 +179,18 @@ $volumeUpButton.addEventListener('click', function() {
   if ($myVideo.volume >= 0.1) {
     $('#mute').attr('src', 'icons/volume-on-icon.png');
   }
-} );
+});
+
+$playbackNormal.addEventListener('click', function() {
+  $myVideo.playbackRate = 1;
+});
+
+$playbackFast.addEventListener('click', function() {
+  $myVideo.playbackRate = 1.5;
+});
 
 $captionTextControl.addEventListener('click', function() {
-  if ($myVideo.textTracks[0].mode == "showing") {
+  if ($myVideo.textTracks[0].mode = "showing") {
     $myVideo.textTracks[0].mode = "disabled";
     $('#caption-text-control').attr('src', 'icons/caption-text-off.png');
   } else {

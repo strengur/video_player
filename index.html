@@ -16,13 +16,14 @@
       <video id="the-player" class="video-player">
         <source src="video/video.mp4" type="video/mp4">
         <source src="video/video.ogg" type="video/ogg">
-        <track label="English text" kind="subtitles" srclang="in" src="video/captions.vtt" default>
+        <track label="English text" kind="subtitles" srclang="en" src="video/captions.vtt" default>
       </video>
 
 
       <div class="video-controls">
         <div id="progressBar" class="progressBarNoFill">
-          <div class="progressBarFilling"></div>
+          <div id="buffer-bar-filling"></div>
+          <div class="progress-bar-filling"></div>
           <div id="timeOnProgressBar"></div>
         </div>
         <div class="control-panel">
@@ -30,12 +31,14 @@
             <img id="play-pause" src="icons/play-icon.png">
           </div>
           <div class="time flex-item flex-item-2">
-            <p><span id="currentTime"></span> / <span id="duration"></span></p>
+            <p><span id="current-time"></span> / <span id="duration"></span></p>
           </div>
           <div class="volume-controls flex-item">
             <img id="mute" src="icons/volume-on-icon.png">
             <img id="volume-down" src="icons/volume-down-icon.png">
             <img id="volume-up" src="icons/volume-up-icon.png">
+            <img id="playback-normal" src="icons/playback-1x.png">
+            <img id="playback-fast" src="icons/playback-15x.png">
             <img id="caption-text-control" src="icons/caption-text.png">
             <img id="full-screen" src="icons/fullscreen-icon.png">
           </div>
@@ -50,7 +53,7 @@
     <div id="loadStatus"></div>
       <div class="caption">
         <div id="caption-texts" class="caption-content">
-          <p>Now that we've looked at the architecture of the internet, let's see how you X might connect your personal devices to the internet inside your house. Well there are many ways to connect to the internet, and most often people connect wirelessly.</p>
+          <p>Now that we've looked at the architecture of the internet, let's see how you might connect your personal devices to the internet inside your house. Well there are many ways to connect to the internet, and most often people connect wirelessly.</p>
           <p>Let's look at an example of how you can connect to the internet. If you live in a city or a town, you probably have a coaxial cable for cable Internet, or a phone line if you have DSL, running to the outside of your house, that connects you to the Internet Service Provider, or ISP.</p>
           <p>If you live far out in the country, you'll more likely have a dish outside your house, connecting you wirelessly to your closest ISP, or you might also use the telephone system.</p>
           <p>Whether a wire comes straight from the ISP hookup outside your house, or it travels over radio waves from your roof, the first stop a wire will make once inside your house, is at your modem.</p>
