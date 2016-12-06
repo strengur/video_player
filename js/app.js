@@ -14,7 +14,8 @@
   var $duration = $myVideo.duration;
   var $playbackNormal = document.getElementById('playback-normal');
   var $playbackFast = document.getElementById('playback-fast');
-  var $volumeChange;
+  var $clickToPlay = $('.caption-content p span');
+  //var $volumeChange;
   var x = 0;
   var $numberOfTextTracks = $myVideo.textTracks[0].cues.length; // How many caption texts there are
 
@@ -100,23 +101,11 @@ $myVideo.addEventListener('progress', function() {
       var $reg = new RegExp(($rmlbr), "igm");
 
       $parag.each(function() {
-        var text = $(this).text().replace($reg, '<span class="caption-highlight">' + $rmlbr + '</span>');
+        var text = $(this).text().replace($reg, '<i class="caption-highlight">' + $rmlbr + '</i>');
         $(this).html(text);
       });
   }
 // END: Function to highlight bodytext as it is spoken.
-
-function videoVolume($volumeChange) {
-  console.log($volumeChange);
-}
-
-  var screenSize = function() {
-
-  }
-
-  var soundOnOff = function() {
-
-  }
 
 // Event listeners
 
@@ -202,3 +191,17 @@ $captionTextControl.addEventListener('click', function() {
 $sizeScreenButton.addEventListener('click', function() {
   $myVideo.webkitEnterFullScreen();
 });
+
+$('.caption-content p span').click(function() {
+clickedStartTime = $(this).attr('data-caption-start');
+$myVideo.currentTime = clickedStartTime;
+$myVideo.play();
+console.log(clickedStartTime);
+});
+
+// $clickToPlay.addEventListener('click', function() {
+//   clickedStartTime = $(this).attr('data-caption-start');
+//   $myVideo.currentTime = clickedStartTime;
+//   $myVideo.play();
+//   console.log(clickedStartTime);
+// });
