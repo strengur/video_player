@@ -53,6 +53,7 @@
       x++;
       highlightText((x-1));
     }
+    console.log('Playing');
   };
 
 function videoCurrentTime() {
@@ -95,17 +96,42 @@ $myVideo.addEventListener('progress', function() {
   function highlightText(x) {
       var $objectKey = $captionTextArray[x];
       $key = $captionTextObject[$objectKey];
-      var $parag = $('#caption-texts p');
+      var $paragSpan = $('.caption-content p span');
+      var $captionSpan = $paragSpan[x];
+      //$paragSpan.toggleClass('caption-highlight');
 
-      var $rmlbr = $key.replace(/(\r\n|\n|\r)/gm," ");
-      var $reg = new RegExp(($rmlbr), "igm");
 
-      $parag.each(function() {
-        var text = $(this).text().replace($reg, '<i class="caption-highlight">' + $rmlbr + '</i>');
-        $(this).html(text);
-      });
+      console.log($objectKey);
+      console.log($captionSpan);
+      if($objectKey != $paragSpan.attr('data-caption-start')) {
+      $paragSpan.prev().siblings().removeClass();
+    }
+    if($myVideo.pause == true) {
+    $paragSpan.siblings().removeClass();
+    }
+
+      if($objectKey = $paragSpan.attr('data-caption-start')) {
+        $captionSpan.className = "caption-highlight";
+      }
   }
 // END: Function to highlight bodytext as it is spoken.
+
+$('.caption-content p span').click(function() {
+  var $clickedStartTime = $(this).attr('data-caption-start');
+  var $txt = $(this).text();
+  var $objectKey = Object.keys($captionTextObject)[2];
+  var $newX = $captionTextArray.indexOf($clickedStartTime);
+
+
+
+  console.log("New X: ", $newX);
+  console.log("TXT: ", $txt);
+  console.log("Key: ", $objectKey);
+  $myVideo.currentTime = $clickedStartTime;
+  $myVideo.play();
+  console.log($clickedStartTime, ' ', $('.caption-content p span'));
+});
+
 
 // Event listeners
 
@@ -191,17 +217,3 @@ $captionTextControl.addEventListener('click', function() {
 $sizeScreenButton.addEventListener('click', function() {
   $myVideo.webkitEnterFullScreen();
 });
-
-$('.caption-content p span').click(function() {
-clickedStartTime = $(this).attr('data-caption-start');
-$myVideo.currentTime = clickedStartTime;
-$myVideo.play();
-console.log(clickedStartTime);
-});
-
-// $clickToPlay.addEventListener('click', function() {
-//   clickedStartTime = $(this).attr('data-caption-start');
-//   $myVideo.currentTime = clickedStartTime;
-//   $myVideo.play();
-//   console.log(clickedStartTime);
-// });
