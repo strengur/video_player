@@ -45,15 +45,17 @@
   document.getElementById('current-time').innerHTML = "00:00";
   document.getElementById("duration").innerHTML = $totalDuration;
 
-  $myVideo.ontimeupdate = function() {
+  $myVideo.ontimeupdate = function(x) {
     videoCurrentTime();
     playedProgressBarFilling();
     // Function to highlight bodytext
+
+    //console.log('Progress ', x)
     if (Math.round($captionTextArray[x]) === Math.round($myVideo.currentTime)) {
       x++;
       highlightText((x-1));
     }
-    console.log('Playing');
+    //console.log('Playing');
   };
 
 function videoCurrentTime() {
@@ -120,16 +122,15 @@ $('.caption-content p span').click(function() {
   var $clickedStartTime = $(this).attr('data-caption-start');
   var $txt = $(this).text();
   var $objectKey = Object.keys($captionTextObject)[2];
-  var $newX = $captionTextArray.indexOf($clickedStartTime);
-
-
-
-  console.log("New X: ", $newX);
+  var x = $(this).index();
+  highlightText(x);
+  console.log("New X: ", x);
   console.log("TXT: ", $txt);
   console.log("Key: ", $objectKey);
   $myVideo.currentTime = $clickedStartTime;
-  $myVideo.play();
+  //$myVideo.play();
   console.log($clickedStartTime, ' ', $('.caption-content p span'));
+  return x;
 });
 
 
@@ -168,7 +169,7 @@ $playPauseButton.addEventListener('click', function() {
     $myVideo.pause();
     $(this).attr('src', 'icons/play-icon.png');
   }
-}, false);
+});
 
 $muteButton.addEventListener('click', function() {
   if( $myVideo.volume != 1) {
