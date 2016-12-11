@@ -146,7 +146,7 @@ $('#caption-texts p span').click(function() {
   console.log("CL Start time: ", $clickedStartTime);
   highlightFunction($myX);
   $myVideo.currentTime = $clickedStartTime;
-  //$myVideo.play();
+  $myVideo.play();
   showPauseButton();
   //return x;
 });
