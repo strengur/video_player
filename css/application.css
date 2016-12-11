@@ -27,7 +27,7 @@ p {
   margin: 0 auto;
   padding: 20px 20px 0; }
 
-span.caption-highlight {
+.caption-highlight {
   color: #FF9900;
   background: #FFEEDD;
   transition: 1s; }

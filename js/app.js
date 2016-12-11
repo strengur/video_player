@@ -14,8 +14,10 @@
   var $duration = $myVideo.duration;
   var $playbackNormal = document.getElementById('playback-normal');
   var $playbackFast = document.getElementById('playback-fast');
-  var $volumeChange;
+  var $clickToPlay = $('.caption-content p span');
+  //var $volumeChange;
   var x = 0;
+  var r;
   var $numberOfTextTracks = $myVideo.textTracks[0].cues.length; // How many caption texts there are
 
 // BEGIN: Transform seconds from video to min:sec format
@@ -47,12 +49,27 @@
   $myVideo.ontimeupdate = function() {
     videoCurrentTime();
     playedProgressBarFilling();
-    // Function to highlight bodytext
+    highlightFunction(x);
+  };
+
+function highlightFunction($newX) {
+  x = $newX;
+  console.log("OTUD New outside X: ", x);
+  console.log('OTUD Capt txt arr: ', $captionTextArray[x]);
     if (Math.round($captionTextArray[x]) === Math.round($myVideo.currentTime)) {
+      console.log('<<< Highligh if statement >>>');
       x++;
       highlightText((x-1));
     }
-  };
+}
+
+function showPlayButton() {
+  $('#play-pause').attr('src', 'icons/play-icon.png');
+}
+
+function showPauseButton() {
+  $('#play-pause').attr('src', 'icons/pause-icon.png');
+}
 
 function videoCurrentTime() {
   var $currentPlay = transformSeconds($myVideo.currentTime);
@@ -92,31 +109,48 @@ $myVideo.addEventListener('progress', function() {
 
   // Function to make the bodytext highlight.
   function highlightText(x) {
-      var $objectKey = $captionTextArray[x];
-      $key = $captionTextObject[$objectKey];
-      var $parag = $('#caption-texts p');
+    console.log("HL r var: ", r);
+    //x = r;
+    console.log("HL x var: ", x);
+    var $objectKey = $captionTextArray[x];
+    $key = $captionTextObject[$objectKey];
+    var $paragSpan = $('.caption-content p span');
+    var $captionSpan = $paragSpan[x];
 
-      var $rmlbr = $key.replace(/(\r\n|\n|\r)/gm," ");
-      var $reg = new RegExp(($rmlbr), "igm");
+    console.log('HL Obj key: ', $objectKey);
+    console.log('HL Capt span: ', $captionSpan);
 
-      $parag.each(function() {
-        var text = $(this).text().replace($reg, '<span class="caption-highlight">' + $rmlbr + '</span>');
-        $(this).html(text);
-      });
+    if($objectKey != $paragSpan.attr('data-caption-start')) {
+      $paragSpan.prev().siblings().removeClass();
+    }
+
+    if($myVideo.pause == true) {
+      $paragSpan.siblings().removeClass();
+    }
+
+    if($objectKey = $paragSpan.attr('data-caption-start')) {
+      $captionSpan.className = "caption-highlight";
+    }
   }
 // END: Function to highlight bodytext as it is spoken.
 
-function videoVolume($volumeChange) {
-  console.log($volumeChange);
-}
+$('#caption-texts p span').click(function() {
+  var $clickedStartTime = $(this).attr('data-caption-start');
+  var $clickedOn = $(this);
+  var $txt = $(this).text();
+  var $myX = $(this).index();
 
-  var screenSize = function() {
+  console.log("CL Clicked ON: ", $clickedOn);
+  console.log("CL New X: ", $myX);
+  console.log("CL Text: ", $txt);
+  console.log("CL Start time: ", $clickedStartTime);
+  highlightFunction($myX);
+  $myVideo.currentTime = $clickedStartTime;
+  //$myVideo.play();
+  showPauseButton();
+  //return x;
+});
 
-  }
-
-  var soundOnOff = function() {
-
-  }
 
 // Event listeners
 
@@ -143,17 +177,17 @@ $('.video-content-and-control').mouseenter(function() {
   $('.video-controls').addClass('video-controls-show');
 }).mouseleave(function() {
    $('.video-controls').removeClass('video-controls-show');
- });
+});
 
 $playPauseButton.addEventListener('click', function() {
   if( $myVideo.paused ) {
     $myVideo.play();
-    $(this).attr('src', 'icons/pause-icon.png');
+    showPauseButton();
   } else {
     $myVideo.pause();
-    $(this).attr('src', 'icons/play-icon.png');
+    showPlayButton();
   }
-}, false);
+});
 
 $muteButton.addEventListener('click', function() {
   if( $myVideo.volume != 1) {
