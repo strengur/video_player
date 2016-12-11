@@ -1,24 +1,39 @@
 // Variables
   var $myVideo = document.getElementsByTagName("video")[0];
-  //var $cccc = document.getElementsByClassName('video-content-and-control');
   var $playPauseButton = document.getElementById('play-pause');
   var $sizeScreenButton = document.getElementById('full-screen');
   var $muteButton = document.getElementById('mute');
   var $volumeDownButton = document.getElementById('volume-down');
   var $volumeUpButton = document.getElementById('volume-up');
-  var $muteButton = document.getElementById('mute');
   var $captionTextControl = document.getElementById('caption-text-control');
   var $timeLine = document.getElementById('progressBar');
   var $timeBubble = document.getElementById('timeOnProgressBar');
-  var $currentTime = $myVideo.currentTime;
+  //var $currentTime = $myVideo.currentTime;
   var $duration = $myVideo.duration;
+  var $durationTotal = transformSeconds($duration);
   var $playbackNormal = document.getElementById('playback-normal');
   var $playbackFast = document.getElementById('playback-fast');
-  var $clickToPlay = $('.caption-content p span');
+  //var $clickToPlay = $('.caption-content p span');
   //var $volumeChange;
   var x = 0;
-  var r;
+  //var r;
   var $numberOfTextTracks = $myVideo.textTracks[0].cues.length; // How many caption texts there are
+
+  // Add caption text to object
+    var $captionTextObject = new Object();
+    for(var i = 0; i < $numberOfTextTracks; i++ ) {
+      var $startOfTextTrack = $myVideo.textTracks[0].cues[i].startTime;
+      var $textInTextTrack = $myVideo.textTracks[0].cues[i].text;
+      $captionTextObject[$startOfTextTrack] = $textInTextTrack;
+    }
+  // Add caption time as array to be used to retrieve text from the object above.
+    var $captionTextArray = new Array();
+    for(var i = 0; i < $numberOfTextTracks; i++ ) {
+      var $startOfTextTrack = $myVideo.textTracks[0].cues[i].startTime;
+      $captionTextArray.push($startOfTextTrack);
+    }
+
+//Functions
 
 // BEGIN: Transform seconds from video to min:sec format
   function transformSeconds($e) {
@@ -28,39 +43,61 @@
     return [$minutes, $seconds];
   }
 
-  var $durationTotal = transformSeconds($duration);
+
 // END: Transform seconds from video to min:sec format
 
-// BEGIN: Check to see if sec and/or min is two digit or not and if not, add leading cero to the time.
-  function ceroLeft(string,pad,length) {
-    if (string.toString().length !== 2) {
-      return (new Array(length+1).join(pad)+string);
-    } else {
-    return (new Array(length).join(pad)+string);
+
+//BEGIN: Time display in control area form: 00:00 / 00:00
+  // BEGIN: Check to see if sec and/or min is two digit or not and if not, add leading cero to the time.
+    function ceroLeft(string,pad,length) {
+      if (string.toString().length !== 2) {
+        return (new Array(length+1).join(pad)+string);
+      } else {
+      return (new Array(length).join(pad)+string);
+      }
     }
-  }
   // END: Check to see if sec and/or min is two digit or not and if not, add leading cero to the time.
 
   var $totalDuration = ceroLeft($durationTotal[0],'0',1) + ':' + ceroLeft(Math.round($durationTotal[1]),'0', 1);
 
   document.getElementById('current-time').innerHTML = "00:00";
   document.getElementById("duration").innerHTML = $totalDuration;
+//END: Time display in control area form: 00:00 / 00:00
 
+// BEGIN: While video playing some needs to be updated along.
   $myVideo.ontimeupdate = function() {
     videoCurrentTime();
     playedProgressBarFilling();
     highlightFunction(x);
   };
+// END: While video playing some needs to be updated along.
 
 function highlightFunction($newX) {
+  console.log("HLF new x:", $newX);
   x = $newX;
-  console.log("OTUD New outside X: ", x);
-  console.log('OTUD Capt txt arr: ', $captionTextArray[x]);
-    if (Math.round($captionTextArray[x]) === Math.round($myVideo.currentTime)) {
-      console.log('<<< Highligh if statement >>>');
-      x++;
-      highlightText((x-1));
-    }
+  if (Math.round($captionTextArray[x]) === Math.round($myVideo.currentTime)) {
+    x++;
+    highlightText((x-1));
+  }
+}
+
+function highlightText(x) {
+  var $objectKey = $captionTextArray[x];
+  $key = $captionTextObject[$objectKey];
+  var $paragSpan = $('.caption-content p span');
+  var $captionSpan = $paragSpan[x];
+
+  // if($objectKey != $paragSpan.attr('data-caption-start')) {
+  //   $paragSpan.prev().siblings().removeClass();
+  // }
+  //
+  // if($myVideo.pause == true) {
+  //   $paragSpan.siblings().removeClass();
+  // }
+  //
+  // if($objectKey = $paragSpan.attr('data-caption-start')) {
+  //   $captionSpan.className = "caption-highlight";
+  // }
 }
 
 function showPlayButton() {
@@ -92,67 +129,18 @@ $myVideo.addEventListener('progress', function() {
   }
 });
 
-// BEGIN: Highlight bodytext as it is spoken.
-  // Add caption text to object
-    var $captionTextObject = new Object();
-    for(var i = 0; i < $numberOfTextTracks; i++ ) {
-      var $startOfTextTrack = $myVideo.textTracks[0].cues[i].startTime;
-      var $textInTextTrack = $myVideo.textTracks[0].cues[i].text;
-      $captionTextObject[$startOfTextTrack] = $textInTextTrack;
-    }
-  // Add caption time as array to be used to retrieve text from the object above.
-    var $captionTextArray = new Array();
-    for(var i = 0; i < $numberOfTextTracks; i++ ) {
-      var $startOfTextTrack = $myVideo.textTracks[0].cues[i].startTime;
-      $captionTextArray.push($startOfTextTrack);
-    }
-
-  // Function to make the bodytext highlight.
-  function highlightText(x) {
-    console.log("HL r var: ", r);
-    //x = r;
-    console.log("HL x var: ", x);
-    var $objectKey = $captionTextArray[x];
-    $key = $captionTextObject[$objectKey];
-    var $paragSpan = $('.caption-content p span');
-    var $captionSpan = $paragSpan[x];
-
-    console.log('HL Obj key: ', $objectKey);
-    console.log('HL Capt span: ', $captionSpan);
-
-    if($objectKey != $paragSpan.attr('data-caption-start')) {
-      $paragSpan.prev().siblings().removeClass();
-    }
-
-    if($myVideo.pause == true) {
-      $paragSpan.siblings().removeClass();
-    }
-
-    if($objectKey = $paragSpan.attr('data-caption-start')) {
-      $captionSpan.className = "caption-highlight";
-    }
-  }
-// END: Function to highlight bodytext as it is spoken.
+// Event listeners
 
 $('#caption-texts p span').click(function() {
   var $clickedStartTime = $(this).attr('data-caption-start');
-  var $clickedOn = $(this);
-  var $txt = $(this).text();
+  //var $clickedOn = $(this);
   var $myX = $(this).index();
 
-  console.log("CL Clicked ON: ", $clickedOn);
-  console.log("CL New X: ", $myX);
-  console.log("CL Text: ", $txt);
-  console.log("CL Start time: ", $clickedStartTime);
   highlightFunction($myX);
   $myVideo.currentTime = $clickedStartTime;
   $myVideo.play();
   showPauseButton();
-  //return x;
 });
-
-
-// Event listeners
 
 $timeLine.addEventListener('mousemove', function() {
   var $locationOnBar = event.pageX;
@@ -166,6 +154,15 @@ $timeLine.addEventListener('mousemove', function() {
   $($timeBubble).css('left', ($locationToPerc-2) + '%');
   $timeLine.addEventListener('click', function() {
     $myVideo.currentTime = $durationOnBar;
+    console.log("Duration on Bar: ", $durationOnBar)
+    var $txt = $(this).text();
+    $newX = $myVideo.textTracks[0].activeCues[0].id;
+    //var $newX = $cueId;
+    //console.log("PB cueId: ", $cueId);
+    console.log("PB New x: ", $newX);
+    highlightFunction($newX);
+    // delete $cueId;
+    // console.log("PB cueId 2: ", $cueId);
   });
 });
 
