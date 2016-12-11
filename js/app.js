@@ -46,10 +46,9 @@
   document.getElementById('current-time').innerHTML = "00:00";
   document.getElementById("duration").innerHTML = $totalDuration;
 
-  $myVideo.ontimeupdate = function(x) {
+  $myVideo.ontimeupdate = function() {
     videoCurrentTime();
     playedProgressBarFilling();
-<<<<<<< HEAD
     highlightFunction(x);
   };
 
@@ -57,17 +56,11 @@ function highlightFunction($newX) {
   x = $newX;
   console.log("OTUD New outside X: ", x);
   console.log('OTUD Capt txt arr: ', $captionTextArray[x]);
-=======
-    // Function to highlight bodytext
-
-    //console.log('Progress ', x)
->>>>>>> origin/master
     if (Math.round($captionTextArray[x]) === Math.round($myVideo.currentTime)) {
       console.log('<<< Highligh if statement >>>');
       x++;
       highlightText((x-1));
     }
-<<<<<<< HEAD
 }
 
 function showPlayButton() {
@@ -77,10 +70,6 @@ function showPlayButton() {
 function showPauseButton() {
   $('#play-pause').attr('src', 'icons/pause-icon.png');
 }
-=======
-    //console.log('Playing');
-  };
->>>>>>> origin/master
 
 function videoCurrentTime() {
   var $currentPlay = transformSeconds($myVideo.currentTime);
@@ -120,7 +109,6 @@ $myVideo.addEventListener('progress', function() {
 
   // Function to make the bodytext highlight.
   function highlightText(x) {
-<<<<<<< HEAD
     console.log("HL r var: ", r);
     //x = r;
     console.log("HL x var: ", x);
@@ -161,43 +149,6 @@ $('#caption-texts p span').click(function() {
   //$myVideo.play();
   showPauseButton();
   //return x;
-=======
-      var $objectKey = $captionTextArray[x];
-      $key = $captionTextObject[$objectKey];
-      var $paragSpan = $('.caption-content p span');
-      var $captionSpan = $paragSpan[x];
-      //$paragSpan.toggleClass('caption-highlight');
-
-
-      console.log($objectKey);
-      console.log($captionSpan);
-      if($objectKey != $paragSpan.attr('data-caption-start')) {
-      $paragSpan.prev().siblings().removeClass();
-    }
-    if($myVideo.pause == true) {
-    $paragSpan.siblings().removeClass();
-    }
-
-      if($objectKey = $paragSpan.attr('data-caption-start')) {
-        $captionSpan.className = "caption-highlight";
-      }
-  }
-// END: Function to highlight bodytext as it is spoken.
-
-$('.caption-content p span').click(function() {
-  var $clickedStartTime = $(this).attr('data-caption-start');
-  var $txt = $(this).text();
-  var $objectKey = Object.keys($captionTextObject)[2];
-  var x = $(this).index();
-  highlightText(x);
-  console.log("New X: ", x);
-  console.log("TXT: ", $txt);
-  console.log("Key: ", $objectKey);
-  $myVideo.currentTime = $clickedStartTime;
-  //$myVideo.play();
-  console.log($clickedStartTime, ' ', $('.caption-content p span'));
-  return x;
->>>>>>> origin/master
 });
 
 
