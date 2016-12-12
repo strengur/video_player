@@ -73,7 +73,6 @@
 // END: While video playing some needs to be updated along.
 
 function highlightFunction($newX) {
-  console.log("HLF new x:", $newX);
   x = $newX;
   if (Math.round($captionTextArray[x]) === Math.round($myVideo.currentTime)) {
     x++;
@@ -83,21 +82,20 @@ function highlightFunction($newX) {
 
 function highlightText(x) {
   var $objectKey = $captionTextArray[x];
-  $key = $captionTextObject[$objectKey];
   var $paragSpan = $('.caption-content p span');
   var $captionSpan = $paragSpan[x];
 
-  // if($objectKey != $paragSpan.attr('data-caption-start')) {
-  //   $paragSpan.prev().siblings().removeClass();
-  // }
-  //
-  // if($myVideo.pause == true) {
-  //   $paragSpan.siblings().removeClass();
-  // }
-  //
-  // if($objectKey = $paragSpan.attr('data-caption-start')) {
-  //   $captionSpan.className = "caption-highlight";
-  // }
+  if($objectKey != $paragSpan.attr('data-caption-start')) {
+    $paragSpan.prev().siblings().removeClass();
+  }
+
+  if($myVideo.pause === true) {
+    $paragSpan.siblings().removeClass();
+  }
+
+  if($objectKey == $paragSpan.attr('data-caption-start')) {
+    $captionSpan.className = "caption-highlight";
+  }
 }
 
 function showPlayButton() {
@@ -142,8 +140,11 @@ $('#caption-texts p span').click(function() {
   showPauseButton();
 });
 
-$timeLine.addEventListener('mousemove', function() {
-  var $locationOnBar = event.pageX;
+$timeLine.addEventListener('mousemove', function(e) {
+
+  var $locationOnBar = e.pageX;
+
+  //var $locationOnBar = event.pageX;
   var $locationToPerc = $locationOnBar / Math.round($timeLine.offsetWidth) * 100 -2;
   var $durationOnBar = $locationOnBar / Math.round($timeLine.offsetWidth) * $duration -1.5;
   var $durationTotal = transformSeconds($durationOnBar);
@@ -152,23 +153,15 @@ $timeLine.addEventListener('mousemove', function() {
   document.getElementById('timeOnProgressBar').innerHTML = $bubbleTime;
   $($timeBubble).css('display', 'block');
   $($timeBubble).css('left', ($locationToPerc-2) + '%');
+
   $timeLine.addEventListener('click', function() {
     $myVideo.currentTime = $durationOnBar;
-    console.log("Duration on Bar: ", $durationOnBar)
-    var $txt = $(this).text();
-    $newX = $myVideo.textTracks[0].activeCues[0].id;
-    //var $newX = $cueId;
-    //console.log("PB cueId: ", $cueId);
-    console.log("PB New x: ", $newX);
-    highlightFunction($newX);
-    // delete $cueId;
-    // console.log("PB cueId 2: ", $cueId);
   });
 });
 
 $timeLine.addEventListener('mouseleave', function() {
   $($timeBubble).css('display', 'none');
-})
+});
 
 $('.video-content-and-control').mouseenter(function() {
   $('.video-controls').addClass('video-controls-show');
@@ -221,7 +214,7 @@ $playbackFast.addEventListener('click', function() {
 });
 
 $captionTextControl.addEventListener('click', function() {
-  if ($myVideo.textTracks[0].mode = "showing") {
+  if ($myVideo.textTracks[0].mode == "showing") {
     $myVideo.textTracks[0].mode = "disabled";
     $('#caption-text-control').attr('src', 'icons/caption-text-off.png');
   } else {
@@ -231,5 +224,14 @@ $captionTextControl.addEventListener('click', function() {
 });
 
 $sizeScreenButton.addEventListener('click', function() {
-  $myVideo.webkitEnterFullScreen();
+var $i = $myVideo;
+if ($i.requestFullscreen) {
+	$i.requestFullscreen();
+} else if ($i.webkitRequestFullscreen) {
+	$i.webkitRequestFullscreen();
+} else if ($i.mozRequestFullScreen) {
+	$i.mozRequestFullScreen();
+} else if ($i.msRequestFullscreen) {
+	$i.msRequestFullscreen();
+}
 });
