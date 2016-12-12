@@ -35,6 +35,17 @@
 
 //Functions
 
+// Play or pause function used by Play/Pause button, clicks on video it self
+function playOrPause() {
+  if( $myVideo.paused ) {
+    $myVideo.play();
+    showPauseButton();
+  } else {
+    $myVideo.pause();
+    showPlayButton();
+  }
+}
+
 // BEGIN: Transform seconds from video to min:sec format
   function transformSeconds($e) {
     var $minutes = Math.floor($e / 60);
@@ -93,7 +104,7 @@ function highlightText(x) {
     $paragSpan.siblings().removeClass();
   }
 
-  if($objectKey == $paragSpan.attr('data-caption-start')) {
+  if($objectKey = $paragSpan.attr('data-caption-start')) {
     $captionSpan.className = "caption-highlight";
   }
 }
@@ -170,12 +181,17 @@ $('.video-content-and-control').mouseenter(function() {
 });
 
 $playPauseButton.addEventListener('click', function() {
-  if( $myVideo.paused ) {
-    $myVideo.play();
-    showPauseButton();
-  } else {
-    $myVideo.pause();
-    showPlayButton();
+  playOrPause();
+});
+
+$myVideo.addEventListener('click', function() {
+  playOrPause();
+});
+
+$(document).keydown(function(key) {
+  key.preventDefault();
+  if(key.keyCode == 32) {
+    playOrPause();
   }
 });
 
@@ -190,7 +206,6 @@ $muteButton.addEventListener('click', function() {
 }, true);
 
 $volumeDownButton.addEventListener('click', function() {
-  var currentVolume = $myVideo.volume;
   $myVideo.volume -= 0.1;
   if ($myVideo.volume < 0.1) {
     $('#mute').attr('src', 'icons/volume-off-icon.png');
@@ -198,7 +213,6 @@ $volumeDownButton.addEventListener('click', function() {
 });
 
 $volumeUpButton.addEventListener('click', function() {
-  var currentVolume = $myVideo.volume;
   $myVideo.volume += 0.1;
   if ($myVideo.volume >= 0.1) {
     $('#mute').attr('src', 'icons/volume-on-icon.png');
@@ -224,14 +238,14 @@ $captionTextControl.addEventListener('click', function() {
 });
 
 $sizeScreenButton.addEventListener('click', function() {
-var $i = $myVideo;
-if ($i.requestFullscreen) {
-	$i.requestFullscreen();
-} else if ($i.webkitRequestFullscreen) {
-	$i.webkitRequestFullscreen();
-} else if ($i.mozRequestFullScreen) {
-	$i.mozRequestFullScreen();
-} else if ($i.msRequestFullscreen) {
-	$i.msRequestFullscreen();
-}
+  var $i = $myVideo;
+  if ($i.requestFullscreen) {
+  	$i.requestFullscreen();
+  } else if ($i.webkitRequestFullscreen) {
+  	$i.webkitRequestFullscreen();
+  } else if ($i.mozRequestFullScreen) {
+  	$i.mozRequestFullScreen();
+  } else if ($i.msRequestFullscreen) {
+  	$i.msRequestFullscreen();
+  }
 });
