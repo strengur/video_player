@@ -20,14 +20,14 @@
   var $numberOfTextTracks = $myVideo.textTracks[0].cues.length; // How many caption texts there are
 
   // Add caption text to object
-    var $captionTextObject = new Object();
+var $captionTextObject = {};
     for(var i = 0; i < $numberOfTextTracks; i++ ) {
       var $startOfTextTrack = $myVideo.textTracks[0].cues[i].startTime;
       var $textInTextTrack = $myVideo.textTracks[0].cues[i].text;
       $captionTextObject[$startOfTextTrack] = $textInTextTrack;
     }
   // Add caption time as array to be used to retrieve text from the object above.
-    var $captionTextArray = new Array();
+    var $captionTextArray = [];
     for(var i = 0; i < $numberOfTextTracks; i++ ) {
       var $startOfTextTrack = $myVideo.textTracks[0].cues[i].startTime;
       $captionTextArray.push($startOfTextTrack);
